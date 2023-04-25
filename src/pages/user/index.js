@@ -1,4 +1,6 @@
-export default function index({ users }) {
+import Image from "next/image";
+
+export default function index({ users, photos }) {
   return (
     <div>
       <h1>user list</h1>
@@ -12,6 +14,7 @@ export default function index({ users }) {
   );
 }
 
+// SSG + ISR;
 export async function getStaticProps() {
   const res = await fetch("https://jsonplaceholder.typicode.com/users");
   const users = await res.json();
@@ -20,5 +23,29 @@ export async function getStaticProps() {
     props: {
       users,
     },
+    revalidate: 10,
   };
 }
+
+export async function getStaticPics() {
+  const res = await fetch("https://jsonplaceholder.typicode.com/photos");
+  const photos = await res.json();
+
+  return {
+    props: {
+      photos,
+    },
+  };
+}
+
+//SSR
+// export async function getServerSideProps() {
+//   const res = await fetch("https://jsonplaceholder.typicode.com/users");
+//   const users = await res.json();
+
+//   return {
+//     props: {
+//       users,
+//     },
+//   };
+// }
